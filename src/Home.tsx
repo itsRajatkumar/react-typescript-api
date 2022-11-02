@@ -1,7 +1,8 @@
 import "./styles.css";
 import { useState, useEffect } from "react";
-import Card from "./Card/Card";
+import Cards from "./Card/Card";
 import Pagination from "./Pagination/Pagination";
+import Container from '@mui/material/Container';
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
@@ -10,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import ButtonBase from "@mui/material/ButtonBase";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { FormatUnderlined } from "@mui/icons-material";
+import Navbar from './Navbar/Navbar'
 
 export default function Home() {
   const [users, setUsers] = useState([]);
@@ -19,7 +21,8 @@ export default function Home() {
     const res = await fetch(`https://reqres.in/api/users?page=${page}`);
     const json = await res.json();
     setUsers(json.data);
-    setFullData(json);
+    console.log(json);
+    setFullData(json.total_pages);
   };
   useEffect(() => {
     fun();
@@ -29,9 +32,11 @@ export default function Home() {
   }, [page]);
   return (
     <div className="App">
+      <Navbar/>
       <div>
         {users.length &&
           users.map((user) => {
+            console.log(user)
             return (
               <Paper
                 sx={{
@@ -45,13 +50,13 @@ export default function Home() {
               >
                 <Grid container spacing={2}>
                   <Grid item width="100%">
-                    <Link to={`/${user.id}`}>
-                      <Card
-                        key={user.id}
-                        userid={user.id}
-                        name={user.first_name + " " + user.last_name}
-                        email={user.email}
-                        img={user.avatar}
+                    <Link to={`/${user['id']}`}>
+                      <Cards
+                        key={user['id']}
+                        userid={user['id']}
+                        name={user['first_name'] + " " + user['last_name']}
+                        email={user['email']}
+                        img={user['avatar']}
                       />
                     </Link>
                   </Grid>
@@ -60,7 +65,19 @@ export default function Home() {
             );
           })}
       </div>
-      <Pagination total={full_data.total_pages} setPage={setPage} />
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        style={{ minHeight: '100px' }}
+      >
+
+        <Grid item xs={3}>
+        <Pagination total={full_data} setPage={setPage} />
+        </Grid>
+      </Grid>
     </div>
   );
 }

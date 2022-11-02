@@ -28,15 +28,15 @@ export default function Profile() {
           <CardMedia
             component="img"
             height="400"
-            image={user.avatar}
-            alt={user.first_name}
+            image={user['avatar']}
+            alt={user['first_name']}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
-              {user.first_name + " " + user.last_name}
+              {user['first_name'] + " " + user['last_name']}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {user.email}
+              {user['email']}
             </Typography>
           </CardContent>
         </CardActionArea>
